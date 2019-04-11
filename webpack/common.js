@@ -5,7 +5,9 @@ const { join } = require('path')
 const paths = {
   root: join(__dirname, '..'),
   src: join(__dirname, '..', 'src'),
-  dist: join(__dirname, '..', 'dist')
+  dist: join(__dirname, '..', 'dist'),
+  normalizeCss: join(__dirname, '..', 'node_modules', 'normalize.css'),
+  hilightJs: join(__dirname, '..', 'node_modules', 'highlight.js', 'styles')
 }
 
 module.exports = {
@@ -62,7 +64,7 @@ module.exports = {
 
   cssLoader: {
     test: /\.css$/,
-    include: paths.src,
+    include: [paths.src, paths.normalizeCss, paths.hilightJs],
     use: ['style-loader', 'css-loader']
   },
 

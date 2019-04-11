@@ -3,11 +3,16 @@
 import React from 'react'
 import Header from './header'
 
-const MarkdownEditor = () => (
+const MarkdownEditor = ({handleChange, getMarkup, lines}) => (
   <section className='editor'>
     <Header />
-    <textarea name='textarea'/>
-    <article className='view'/>
+    <span className='numbers'>
+      {lines.map((number, index) => (
+        <div><span className='number' key={index}>{index + 1}</span></div>
+      ))}
+    </span>
+    <textarea name='textarea' onChange={handleChange}/>
+    <article className='view' dangerouslySetInnerHTML={getMarkup()} />
   </section>
 )
 
