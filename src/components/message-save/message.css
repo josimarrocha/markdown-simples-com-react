@@ -1,0 +1,12 @@
+.message{
+  width: 120px;
+  padding: 4px 0;
+  border: solid 1px #bbb;
+  font-size: 16px;
+  text-align: center;
+  margin: auto 20px;
+}
+.p{
+  margin: auto;
+  font-weight: 600
+}

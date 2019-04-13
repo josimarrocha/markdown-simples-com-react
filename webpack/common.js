@@ -7,7 +7,8 @@ const paths = {
   src: join(__dirname, '..', 'src'),
   dist: join(__dirname, '..', 'dist'),
   normalizeCss: join(__dirname, '..', 'node_modules', 'normalize.css'),
-  hilightJs: join(__dirname, '..', 'node_modules', 'highlight.js', 'styles')
+  hilightJs: join(__dirname, '..', 'node_modules', 'highlight.js', 'styles'),
+  codeMirrorCSS: join(__dirname, '..', 'node_modules', 'codemirror','lib', 'codemirror.css')
 }
 
 module.exports = {
@@ -64,7 +65,7 @@ module.exports = {
 
   cssLoader: {
     test: /\.css$/,
-    include: [paths.src, paths.normalizeCss, paths.hilightJs],
+    include: [paths.src, paths.normalizeCss, paths.hilightJs, paths.codeMirrorCSS],
     use: ['style-loader', 'css-loader']
   },
 

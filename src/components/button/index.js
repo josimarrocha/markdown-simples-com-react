@@ -2,10 +2,10 @@
 
 import React from 'react'
 import './button.css'
-const Button = ({handleClick, children, color}) => (
+const Button = ({ handleClick, children, color }) => (
   <button
     className='btn'
-    style={{ background: color}}
+    style={{ background: color }}
     onClick={handleClick}>{children}
   </button>
 )
