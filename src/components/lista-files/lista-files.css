@@ -1,0 +1,21 @@
+.lista{
+  width: 100%;
+  margin-top: 20px;
+  list-style: none;
+}
+.lista li{
+  font-size: .6em;
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  border-top: solid 1px #999;
+  cursor: pointer;
+  letter-spacing: 1.5px;
+}
+.lista li:hover{
+  background: #aaa;
+  color: aliceblue
+}
+.lista li:last-child{
+  border-bottom: solid 1px #999
+}

@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import MarkdownEditor from 'views/markdown-editor'
 import marked from 'marked'
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 import 'normalize.css'
 import 'highlight.js/styles/dracula.css'
 import cm from 'codemirror'
@@ -22,9 +22,30 @@ import('highlight.js').then((hljs) => {
 })
 
 class App extends Component {
+  componentWillUnmount() {
+    clearTimeout(this.timer)
+  }
+
+  componentDidUpdate() {
+    clearInterval(this.timer)
+    this.timer = setTimeout(this.handleSave, 500)
+  }
+
+  componentDidMount() {
+    const files = JSON.parse(localStorage.getItem('markdown'))
+    this.setState({ files })
+
+    cm.fromTextArea(this.referencia, {
+      mode: 'textile',
+      lineNumbers: true,
+      autofocus: true
+    }).on('focus', (cm) => {
+      this.setState({isShowFiles: false})
+      this.handleChangeCodeMirror(cm)
+    })
+  }
   constructor() {
     super()
-
     this.clearState = () => ({
       value: '',
       title: '',
@@ -34,7 +55,22 @@ class App extends Component {
     this.state = {
       ...this.clearState(),
       files: {},
-      isSaving: null
+      isSaving: null,
+      isShowFiles: false
+    }
+
+    this.handleChangeCodeMirror = (cm) =>{
+      cm.on('change', () => {
+        this.setState({
+          value: cm.getValue(),
+          isSaving: cm.getValue().length > 0 ? true : false
+        })
+      })
+      this.codemirror = cm
+    }
+
+    this.handleChangeInput = (e) => {
+      this.setState({title: e.target.value, isSaving: true})
     }
 
     this.refe = (node) => {
@@ -46,26 +82,23 @@ class App extends Component {
     }
 
     this.handleSave = () => {
-      if(this.state.isSaving){
+      if (this.state.isSaving) {
         const files = {
           ...this.state.files,
           [this.state.id]: {
-            title: this.state.title || 'Sem titulo',
+            title: this.state.title || 'teste',
             content: this.state.value
           }
         }
 
         let mark = JSON.stringify(files)
         localStorage.setItem('markdown', mark)
-        this.setState({
-          isSaving: false,
-          files
-        })
+        this.setState({ isSaving: false, files })
       }
     }
     this.clear = () => {
       this.setState(this.clearState(), () => {
-        this.setState({isSaving: null})
+        this.setState({ isSaving: null, isShowFiles: false })
       })
       this.codemirror.focus()
       this.codemirror.setValue('')
@@ -74,46 +107,44 @@ class App extends Component {
     this.createNew = () => {
       this.clear()
     }
+
     this.handleRemove = () => {
       const { [this.state.id]: id, ...files } = this.state.files
-
       localStorage.setItem('markdown', JSON.stringify(files))
-      this.setState({ files})
+      this.setState({ files })
       this.clear()
     }
-  }
-  componentWillUnmount() {
-    clearTimeout(this.timer)
-  }
-  componentDidUpdate() {
-    clearInterval(this.timer)
-    this.timer = setTimeout(this.handleSave, 500)
-  }
-  componentDidMount() {
-    const files = JSON.parse(localStorage.getItem('markdown'))
-    this.setState({ files })
 
-    cm.fromTextArea(this.referencia, {
-      mode: 'textile',
-      lineNumbers: true,
-      autofocus: true
-    }).on('change', (cm) => {
+    this.showFiles = () => {
+      this.setState({ isShowFiles: !this.state.isShowFiles })
+    }
+
+    this.handleOpenFile = (fileId) => () => {
+      const val = this.state.files[fileId].content
+      this.codemirror.setValue(val)
       this.setState({
-        value: cm.getValue(),
-        isSaving: cm.getValue().length > 0 ? true : false
+        isSaving: null,
+        value: this.state.files[fileId].content,
+        title: this.state.files[fileId].title,
+        id: fileId
       })
-      this.codemirror = cm
-    })
+    }
   }
 
   render() {
     return (
       <MarkdownEditor
         isSaving={this.state.isSaving}
+        isShowFiles={this.state.isShowFiles}
         getMarkup={this.getMarkup}
         refe={this.refe}
         createNew={this.createNew}
         handleRemove={this.handleRemove}
+        showFiles={this.showFiles}
+        files={this.state.files}
+        titleName={this.state.title}
+        handleOpenFile={this.handleOpenFile}
+        handleChangeInput={this.handleChangeInput}
       />
     )
   }
