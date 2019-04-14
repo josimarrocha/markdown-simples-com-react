@@ -8,6 +8,7 @@ import 'normalize.css'
 import 'highlight.js/styles/dracula.css'
 import cm from 'codemirror'
 import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/markdown/markdown'
 import './css/style.css'
 
 import('highlight.js').then((hljs) => {
@@ -36,7 +37,7 @@ class App extends Component {
     this.setState({ files })
 
     cm.fromTextArea(this.referencia, {
-      mode: 'textile',
+      mode: 'markdown',
       lineNumbers: true,
       autofocus: true
     }).on('focus', (cm) => {

@@ -8,7 +8,7 @@ const paths = {
   dist: join(__dirname, '..', 'dist'),
   normalizeCss: join(__dirname, '..', 'node_modules', 'normalize.css'),
   hilightJs: join(__dirname, '..', 'node_modules', 'highlight.js', 'styles'),
-  codeMirrorCSS: join(__dirname, '..', 'node_modules', 'codemirror','lib', 'codemirror.css')
+  codeMirrorCSS: join(__dirname, '..', 'node_modules', 'codemirror')
 }
 
 module.exports = {
